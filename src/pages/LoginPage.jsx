@@ -4,10 +4,12 @@ import { FiEye, FiEyeOff, FiArrowLeft, FiMail, FiLock, FiUser, FiCheckCircle } f
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { MdVerified, MdCheckCircle } from 'react-icons/md';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login, register } = useAuth();
   
   // Check if navigation state requests signup mode
   const initialIsSignUp = location.state?.mode === 'signup';
@@ -23,6 +25,7 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [authError, setAuthError] = useState('');
 
   // Sync state if navigation changes
   useEffect(() => {
@@ -71,20 +74,30 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Mock network request
-    setTimeout(() => {
-      setIsLoading(false);
+    setAuthError('');
+
+    let result;
+    if (isSignUp) {
+      result = await register(formData.name, formData.email, formData.password);
+    } else {
+      result = await login(formData.email, formData.password);
+    }
+
+    setIsLoading(false);
+
+    if (result.success) {
       setIsSuccess(true);
-      // Redirect to home after 2 seconds
       setTimeout(() => {
         navigate('/');
       }, 2000);
-    }, 1500);
+    } else {
+      setAuthError(result.message);
+    }
   };
 
   return (
@@ -282,6 +295,16 @@ const LoginPage = () => {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-5">
+                
+                {/* Auth Error Message */}
+                {authError && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+                    <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    {authError}
+                  </div>
+                )}
                 
                 {/* Full Name Input (Sign Up Only) */}
                 {isSignUp && (
