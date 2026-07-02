@@ -33,7 +33,8 @@ export const AuthProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(response.data.user);
+        // Backend returns: { success, data: { user } }
+        setUser(response.data.data.user);
       } catch (error) {
         console.error('Failed to fetch user profile:', error);
         // Token is invalid or expired
@@ -54,7 +55,8 @@ export const AuthProvider = ({ children }) => {
         password,
       });
       
-      const { token: newToken, user: userData } = response.data;
+      // Backend returns: { success, message, data: { token, user } }
+      const { token: newToken, user: userData } = response.data.data;
       
       localStorage.setItem('token', newToken);
       setToken(newToken);
@@ -76,7 +78,8 @@ export const AuthProvider = ({ children }) => {
         password,
       });
       
-      const { token: newToken, user: userData } = response.data;
+      // Backend returns: { success, message, data: { token, user } }
+      const { token: newToken, user: userData } = response.data.data;
       
       localStorage.setItem('token', newToken);
       setToken(newToken);

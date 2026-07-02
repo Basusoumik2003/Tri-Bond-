@@ -254,14 +254,7 @@ const LoginPage = () => {
               <div className="grid grid-cols-2 gap-3.5 mb-6">
                 <button
                   type="button"
-                  onClick={() => {
-                    setIsLoading(true);
-                    setTimeout(() => {
-                      setIsLoading(false);
-                      setIsSuccess(true);
-                      setTimeout(() => navigate('/'), 2000);
-                    }, 1200);
-                  }}
+                  onClick={() => alert('Google OAuth coming soon! Please use email & password for now.')}
                   className="flex items-center justify-center gap-2 border border-[#c7c4d7]/40 hover:border-[#4648d4]/40 hover:bg-[#faf8ff] px-4 py-3 rounded-xl text-sm font-semibold active:scale-98 cursor-pointer transition-all"
                 >
                   <FcGoogle size={18} />
@@ -269,14 +262,7 @@ const LoginPage = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    setIsLoading(true);
-                    setTimeout(() => {
-                      setIsLoading(false);
-                      setIsSuccess(true);
-                      setTimeout(() => navigate('/'), 2000);
-                    }, 1200);
-                  }}
+                  onClick={() => alert('GitHub OAuth coming soon! Please use email & password for now.')}
                   className="flex items-center justify-center gap-2 border border-[#c7c4d7]/40 hover:border-[#4648d4]/40 hover:bg-[#faf8ff] px-4 py-3 rounded-xl text-sm font-semibold active:scale-98 cursor-pointer transition-all"
                 >
                   <FaGithub size={18} className="text-[#131b2e]" />

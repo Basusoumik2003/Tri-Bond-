@@ -22,8 +22,8 @@ const ProfileDropdown = ({ onClose }) => {
   const avatarInitial = getAvatarInitial();
 
   const handleLogout = () => {
+    setIsOpen(false);
     logout();
-    onClose();
   };
 
   const dropdownItems = [
